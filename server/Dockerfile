@@ -6,7 +6,7 @@ WORKDIR /usr/src/app
 # COPY index.js ./
 # COPY src ./src
 
-# RUN npm ci
+RUN npm ci
 
 EXPOSE 8081
 

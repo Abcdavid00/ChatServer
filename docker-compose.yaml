@@ -19,8 +19,8 @@ services:
     networks:
       - mobike-chat
     command: npm run start
-    volumes:
-      - ./server:/usr/src/app
+    # volumes:
+    #   - ./server:/usr/src/app
     platform: linux/amd64
 
   mongo:
