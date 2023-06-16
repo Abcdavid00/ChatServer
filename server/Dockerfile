@@ -2,11 +2,11 @@ FROM node:18-alpine
 
 WORKDIR /usr/src/app
 
-# COPY package*.json ./
-# COPY index.js ./
-# COPY src ./src
+COPY package*.json ./
+COPY index.js ./
+COPY src ./src
 
-RUN npm ci
+RUN npm install ci
 
 EXPOSE 8081
 

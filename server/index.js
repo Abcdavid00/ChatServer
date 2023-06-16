@@ -1,42 +1,62 @@
 import express from 'express';
-import http from 'http';
 import mongoose from 'mongoose';
-import { Server } from "socket.io";
-import { ChatRoom } from './src/database/schema.js';
+import cors from 'cors';
+import { Server } from 'socket.io';
+import router from './src/routers/index.js';
 
-const mongoURI = process.env.MONGO_URI || 'mongodb://mongo:27017/chat-app';
 
-const port = process.env.PORT || 3000;
-
-const app = express();
-const server = http.createServer(app);
-const io = new Server(server)
-// 
+//Connect to MongoDB
+const mongoURI = process.env.MONGO_URI || 'mongodb://mongo:27017/chat';
 console.log('mongoURI: ', mongoURI);
-// mongoose.connect(mongoURI, { useNewUrlParser: true, useUnifiedTopology: true }).then(() => {
-//   console.log('MongoDB connected');
-// }).catch((error) => {
-//   console.error('Error connecting to MongoDB:', error);
-// });
-
-mongoose.connect(mongoURI, {
-  user: 'root',
-  pass: 'example',
-  autoCreate: true,
-}).then(() => {
+mongoose.connect(mongoURI, { useNewUrlParser: true, useUnifiedTopology: true }).then(() => {
   console.log('MongoDB connected');
 }).catch((error) => {
   console.error('Error connecting to MongoDB:', error);
 });
 
-// mongoose.connect(connectionString, {
-//   useNewUrlParser: true,
-//   useUnifiedTopology: true
+const port = process.env.PORT || 3000;
+
+const app = express();
+app.use(express.urlencoded({ extended: true }));
+app.use(cors({
+  origin: '*',
+  methods: ['GET', 'POST', 'PUT', 'DELETE']
+}));
+app.use(express.json());
+app.use((req, res, next) => {
+  console.log(`${Date.now()} ${req.method} ${req.url}`);
+  next();
+})
+
+async function StartApp() {
+  router(app);
+  const server = app.listen(port, () => {
+    console.log(`listening on *:${port}`);
+  });
+
+  const io = new Server(server);
+  // global.onlineUsers = new Map();
+  io.on('connection', (socket) => {
+    console.log('Socket connected: ' + socket.id);
+  });
+
+}
+
+StartApp();
+
+// const server = http.createServer(app);
+// const io = new Server(server)
+
+// mongoose.connect(mongoURI, {
+//   user: 'root',
+//   pass: 'example',
+//   autoCreate: true,
 // }).then(() => {
-//   console.log('Connected to MongoDB');
+//   console.log('MongoDB connected');
 // }).catch((error) => {
 //   console.error('Error connecting to MongoDB:', error);
 // });
+
 
 // io.on('connection', (socket) => {
 //   console.log('user connected');
@@ -52,11 +72,3 @@ mongoose.connect(mongoURI, {
 //   })
 
 // })
-
-ChatRoom.create({ postId: '123', users: ['user1', 'user2'] }).then((chatRoom) => {
-  console.log("ChatRoom created: ", chatRoom)
-})
-
-server.listen(port, () => {
-  console.log(`listening on *:${port}`);
-});

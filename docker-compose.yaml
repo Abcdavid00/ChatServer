@@ -1,4 +1,4 @@
-version: '3.7'
+version: '3'
 services:
   chat-server:
     build: ./server
@@ -6,36 +6,30 @@ services:
       - mongo
     ports:
       - 30002:${CHAT_SERVER_PORT}
-      - 9229:9229
-    # restart: always
+    restart: always
     env_file:
       - .env
     environment:
-      # - MONGO_USERNAME=${MONGO_INITDB_ROOT_USERNAME}
-      # - MONGO_PASSWORD=${MONGO_INITDB_ROOT_PASSWORD}
-      # - MONGO_DATABASE=${MONGO_INITDB_DATABASE}
-      - MONGO_URI=mongodb://${MONGO_INITDB_ROOT_USERNAME}:${MONGO_INITDB_ROOT_PASSWORD}@mongo:27017/khoa
+      - MONGO_URI=mongodb://${MONGO_INITDB_ROOT_USERNAME}:${MONGO_INITDB_ROOT_PASSWORD}@mongo:27017/${MONGO_INITDB_DATABASE}?authSource=admin
       - PORT = ${CHAT_SERVER_PORT}
     networks:
       - mobike-chat
     command: npm run start
-    # volumes:
-    #   - ./server:/usr/src/app
-    platform: linux/amd64
 
   mongo:
     image: mongo:7.0-rc-jammy
     volumes:
       - ./data:/data/db
+    ports:
+      - 27017:27017
     restart: always
     environment:
       MONGO_INITDB_ROOT_USERNAME: ${MONGO_INITDB_ROOT_USERNAME}
       MONGO_INITDB_ROOT_PASSWORD: ${MONGO_INITDB_ROOT_PASSWORD}
-    ports:
-      - 27017:27017
+      MONGO_INITDB_DATABASE: ${MONGO_INITDB_DATABASE}
+    # command: mongod -u ${MONGO_INITDB_ROOT_USERNAME} -p ${MONGO_INITDB_ROOT_PASSWORD} --authenticationDatabase ${MONGO_INITDB_DATABASE}
     networks:
-      - mobike-chat   
-    platform: linux/amd64
+      - mobike-chat
 
   mongo-express:
     image: mongo-express
@@ -49,7 +43,6 @@ services:
       ME_CONFIG_MONGODB_ENABLE_ADMIN : 'true'
     networks:
       - mobike-chat
-    # platform: linux/amd64
 
 networks:
   mobike-chat:
