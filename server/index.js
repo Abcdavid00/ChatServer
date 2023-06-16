@@ -38,6 +38,11 @@ async function StartApp() {
   // global.onlineUsers = new Map();
   io.on('connection', (socket) => {
     console.log('Socket connected: ' + socket.id);
+
+
+    socket.on('chat message', (msg) => {
+      console.log(`Client ${socket.id} sent message: ${msg}`);
+    })
   });
 
 }
