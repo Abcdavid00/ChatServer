@@ -35,9 +35,14 @@ async function StartApp() {
   });
 
   const io = new Server(server);
-  // global.onlineUsers = new Map();
+  global.onlineUsers = new Map();
   io.on('connection', (socket) => {
     console.log('Socket connected: ' + socket.id);
+
+    socket.on('set user', (uid) => {
+      console.log(`Client ${socket.id} set user: ${uid}`);
+      global.onlineUsers.set(uid, socket.id);
+    });
 
 
     socket.on('chat message', (msg) => {
