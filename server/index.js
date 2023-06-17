@@ -2,6 +2,7 @@ import express from 'express';
 import mongoose from 'mongoose';
 import cors from 'cors';
 import { Server } from 'socket.io';
+import { initializeSocket } from './src/sockets/index.js';
 import router from './src/routers/index.js';
 import BiMap from 'bidirectional-map';
 
@@ -34,66 +35,7 @@ async function StartApp() {
     console.log(`listening on *:${port}`);
   });
 
-  const io = new Server(server);
-  global.onlineUsers = new BiMap();
-  const getUID = (sid) => {
-    return global.onlineUsers.getKey(sid);
-  }
-  const getSID = (uid) => {
-    return global.onlineUsers.get(uid);
-  }
-  io.on('connection', (socket) => {
-
-    console.log('Socket connected: ' + socket.id);
-
-    let sid = socket.id;
-    let uid = null
-
-    socket.on('set user', (id) => {
-      console.log(`Client ${socket.id} set user: ${id}`);
-      global.onlineUsers.set(uid, socket.id);
-      uid = id;
-    });
-
-    socket.on('chat message', (msg) => {
-      console.log(`User ${uid} sent message: ${msg}`);
-    })
-
-    socket.on('disconnect', () => {
-      console.log(`User ${uid} with socketID ${sid} disconnected`)
-      onlineUsers.deleteValue(socket.id);
-    });
-  });
-
+  initializeSocket(server);
 }
 
 StartApp();
-
-// const server = http.createServer(app);
-// const io = new Server(server)
-
-// mongoose.connect(mongoURI, {
-//   user: 'root',
-//   pass: 'example',
-//   autoCreate: true,
-// }).then(() => {
-//   console.log('MongoDB connected');
-// }).catch((error) => {
-//   console.error('Error connecting to MongoDB:', error);
-// });
-
-
-// io.on('connection', (socket) => {
-//   console.log('user connected');
-//   socket.broadcast.emit('New user joined');
-
-//   socket.on('disconnect', () => {
-//       console.log('user disconnected');
-//   })
-
-//   socket.on('chat message', (msg) => {
-//     console.log('message: ' + msg);
-//     io.emit('chat message', msg)
-//   })
-
-// })
