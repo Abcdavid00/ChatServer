@@ -42,7 +42,7 @@ async function StartApp() {
     let uid = null;
 
     socket.on('set user', (id) => {
-      console.log(`Client ${getUID(socket.id)} set user: ${id}`);
+      console.log(`Client ${socket.id} set user: ${id}`);
       // global.onlineUsers.set(uid, socket.id);
       uid = id;
     });
