@@ -4,18 +4,11 @@ import cors from 'cors';
 import { Server } from 'socket.io';
 import { initializeSocket } from './src/sockets/index.js';
 import router from './src/routers/index.js';
-import BiMap from 'bidirectional-map';
-
-//Connect to MongoDB
-const mongoURI = process.env.MONGO_URI || 'mongodb://mongo:27017/chat';
-console.log('mongoURI: ', mongoURI);
-mongoose.connect(mongoURI, { useNewUrlParser: true, useUnifiedTopology: true }).then(() => {
-  console.log('MongoDB connected');
-}).catch((error) => {
-  console.error('Error connecting to MongoDB:', error);
-});
+import { restLogger, combinedLogger } from './src/utils/logger.js';
 
 const port = process.env.PORT || 3000;
+const mongo_root_username = process.env.MONGO_ROOT_USERNAME;
+const mongo_root_password = process.env.MONGO_ROOT_PASSWORD;
 
 const app = express();
 app.use(express.urlencoded({ extended: true }));
@@ -25,14 +18,32 @@ app.use(cors({
 }));
 app.use(express.json());
 app.use((req, res, next) => {
-  console.log(`${Date.now()} ${req.method} ${req.url}`);
+  restLogger.info(`${req.method} ${req.url}`);
   next();
 })
 
 async function StartApp() {
+
+  //Connect to MongoDB
+  const mongoURI = process.env.MONGO_URI || 'mongodb://mongo:27017/chat';
+  combinedLogger.info(`Connecting to MongoDB at ${mongoURI}`);
+  await mongoose.connect(mongoURI, {
+    user: mongo_root_username,
+    pass: mongo_root_password,
+    authSource: 'admin',
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  }).then(() => {
+    combinedLogger.info(`Connected to MongoDB at ${mongoURI}`);
+  }).catch((error) => {
+    combinedLogger.error(`Error connecting to MongoDB: ${error}`);
+    return;
+  });
+
   app.use('/chat', router);
+
   const server = app.listen(port, () => {
-    console.log(`listening on *:${port}`);
+    combinedLogger.info(`Server listening on port ${port}`);
   });
 
   initializeSocket(server);

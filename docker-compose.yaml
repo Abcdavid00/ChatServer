@@ -7,11 +7,11 @@ services:
     ports:
       - 30002:${CHAT_SERVER_PORT}
     restart: always
-    env_file:
-      - .env
     environment:
-      - MONGO_URI=mongodb://${MONGO_INITDB_ROOT_USERNAME}:${MONGO_INITDB_ROOT_PASSWORD}@mongo:27017/${MONGO_INITDB_DATABASE}?authSource=admin
-      - PORT = ${CHAT_SERVER_PORT}
+      MONGO_URI: mongodb://mongo:27017/${MONGO_INITDB_DATABASE}
+      MONGO_ROOT_USERNAME: ${MONGO_INITDB_ROOT_USERNAME}
+      MONGO_ROOT_PASSWORD: ${MONGO_INITDB_ROOT_PASSWORD}
+      PORT: ${CHAT_SERVER_PORT}
     networks:
       - mobike-chat
     command: npm run start
@@ -27,7 +27,6 @@ services:
       MONGO_INITDB_ROOT_USERNAME: ${MONGO_INITDB_ROOT_USERNAME}
       MONGO_INITDB_ROOT_PASSWORD: ${MONGO_INITDB_ROOT_PASSWORD}
       MONGO_INITDB_DATABASE: ${MONGO_INITDB_DATABASE}
-    # command: mongod -u ${MONGO_INITDB_ROOT_USERNAME} -p ${MONGO_INITDB_ROOT_PASSWORD} --authenticationDatabase ${MONGO_INITDB_DATABASE}
     networks:
       - mobike-chat
 

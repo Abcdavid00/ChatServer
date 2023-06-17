@@ -9,4 +9,4 @@ const AttachmentSchema = new mongoose.Schema({
     messageId: { type: mongoose.Schema.Types.ObjectId, ref: 'ChatMessage' },
 })
 
-export const Attachment = mongoose.model('Attachment', AttachmentSchema);ws
+export default Attachment = mongoose.model('Attachment', AttachmentSchema);ws

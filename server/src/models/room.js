@@ -7,4 +7,4 @@ const RoomSchema = new mongoose.Schema({
     latestMessageTimestamp: Date,
 })
 
-export const Room = mongoose.model('Room', RoomSchema);
+export default Room = mongoose.model('Room', RoomSchema);

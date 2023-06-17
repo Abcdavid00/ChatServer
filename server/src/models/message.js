@@ -8,4 +8,4 @@ const MessageSchema = new mongoose.Schema({
     attachment: { type: mongoose.Schema.Types.ObjectId, ref: 'Attachment' }
 })
 
-export const Message = mongoose.model('Message', MessageSchema);
+export default Message = mongoose.model('Message', MessageSchema);
