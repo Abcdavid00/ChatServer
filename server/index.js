@@ -3,7 +3,7 @@ import mongoose from 'mongoose';
 import cors from 'cors';
 import { Server } from 'socket.io';
 import router from './src/routers/index.js';
-
+import BiMap from 'bidirectional-map';
 
 //Connect to MongoDB
 const mongoURI = process.env.MONGO_URI || 'mongodb://mongo:27017/chat';
@@ -35,18 +35,20 @@ async function StartApp() {
   });
 
   const io = new Server(server);
-  global.onlineUsers = new Map();
+  // global.onlineUsers = new BiMap();
   io.on('connection', (socket) => {
     console.log('Socket connected: ' + socket.id);
 
-    socket.on('set user', (uid) => {
-      console.log(`Client ${socket.id} set user: ${uid}`);
-      global.onlineUsers.set(uid, socket.id);
+    let uid = null;
+
+    socket.on('set user', (id) => {
+      console.log(`Client ${getUID(socket.id)} set user: ${id}`);
+      // global.onlineUsers.set(uid, socket.id);
+      uid = id;
     });
 
-
     socket.on('chat message', (msg) => {
-      console.log(`Client ${socket.id} sent message: ${msg}`);
+      console.log(`Client ${uid} sent message: ${msg}`);
     })
   });
 
