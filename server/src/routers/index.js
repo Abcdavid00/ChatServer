@@ -1,14 +1,13 @@
+import express from 'express';
 
+const router = express.Router();
 
-function router(app) {
-    app.get('/', (req, res) => {
-        res.send('Hello World!');
-    });
+router.get('/', (req, res) => {
+    res.send('Hello from Mobike Chat Server!');
+})
 
-    // Wrong route
-    app.use((req, res) => {
-        res.status(404).send('404 Not Found');
-    })
-}
+router.get('/*', (req, res) => {
+    res.status(404).send('404 Not Found');
+});
 
 export default router;

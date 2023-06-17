@@ -29,7 +29,7 @@ app.use((req, res, next) => {
 })
 
 async function StartApp() {
-  router(app);
+  app.use('/chat', router);
   const server = app.listen(port, () => {
     console.log(`listening on *:${port}`);
   });
