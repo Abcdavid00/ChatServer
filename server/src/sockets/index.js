@@ -5,7 +5,7 @@ let io; // Store the Socket.IO instance
 let onlineUsers // Store the online users
 
 export function initializeSocket(server) {
-    io = Server(server);
+    io = new Server(server);
     onlineUsers = new BiMap();
     // Socket.IO event handlers and functionality
     io.on('connection', (socket) => {
