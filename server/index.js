@@ -35,21 +35,34 @@ async function StartApp() {
   });
 
   const io = new Server(server);
-  // global.onlineUsers = new BiMap();
+  global.onlineUsers = new BiMap();
+  const getUID = (sid) => {
+    return global.onlineUsers.getKey(sid);
+  }
+  const getSID = (uid) => {
+    return global.onlineUsers.get(uid);
+  }
   io.on('connection', (socket) => {
+
     console.log('Socket connected: ' + socket.id);
 
-    let uid = null;
+    let sid = socket.id;
+    let uid = null
 
     socket.on('set user', (id) => {
       console.log(`Client ${socket.id} set user: ${id}`);
-      // global.onlineUsers.set(uid, socket.id);
+      global.onlineUsers.set(uid, socket.id);
       uid = id;
     });
 
     socket.on('chat message', (msg) => {
-      console.log(`Client ${uid} sent message: ${msg}`);
+      console.log(`User ${uid} sent message: ${msg}`);
     })
+
+    socket.on('disconnect', () => {
+      console.log(`User ${uid} with socketID ${sid} disconnected`)
+      onlineUsers.deleteValue(socket.id);
+    });
   });
 
 }
