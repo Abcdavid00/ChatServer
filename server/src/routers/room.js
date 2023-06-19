@@ -1,0 +1,47 @@
+import express from 'express';
+import { createRoom, findRoom, getRoom } from '../controllers/room.js';
+
+const router = express.Router();
+
+router.get('/', (req, res) => {
+    res.send('Hello from Mobike Chat Server (Room)!');
+});
+
+router.get('/:roomID', async (req, res) => {
+    const room = await getRoom(req.params.roomID);
+    if (room) {
+        res.send(room);
+    }else {
+        res.status(404).send('Room not found');
+    }
+});
+
+router.post('/create', async (req, res) => {
+    const { postId, users } = req.body;
+    if (!postId || !users) {
+        res.status(400).send('Missing parameters');
+        return;
+    }
+    const [room, created] = await createRoom(postId, users);
+    res.status(200).send({
+        room: room,
+        created: created,
+    });
+    
+})
+
+router.post('/find', async (req, res) => {
+    const { postId, users } = req.body;
+    if (!postId || !users) {
+        res.status(400).send('Missing parameters');
+        return;
+    }
+    const room = await findRoom(postId, users);
+    if (room) {
+        res.status(200).send(room);
+    }else {
+        res.status(404).send('Room not found');
+    }
+})
+
+export default router;

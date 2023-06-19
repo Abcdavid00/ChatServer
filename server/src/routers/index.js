@@ -1,7 +1,9 @@
 import express from 'express';
+import RoomRouter from './room.js';
 
 const router = express.Router();
 
+router.use('/room', RoomRouter);
 router.get('/', (req, res) => {
     res.send('Hello from Mobike Chat Server!');
 })

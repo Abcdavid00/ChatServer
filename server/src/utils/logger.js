@@ -7,9 +7,9 @@ const logFormat = printf(({ level, message, timestamp }) => {
 });
 
 // Create separate transports for REST requests, Socket.IO, and combined logs
-const restTransport = new winston.transports.File({ filename: 'rest.log' });
-const socketTransport = new winston.transports.File({ filename: 'socket.log' });
-const combinedTransport = new winston.transports.File({ filename: 'combined.log' });
+const restTransport = new winston.transports.File({ filename: 'rest.log', dirname: 'logs'});
+const socketTransport = new winston.transports.File({ filename: 'socket.log', dirname: 'logs' });
+const combinedTransport = new winston.transports.File({ filename: 'combined.log', dirname: 'logs' });
 const consoleTransport = new winston.transports.Console();
 
 // Create separate loggers for REST requests, Socket.IO, and combined logs

@@ -1,12 +1,12 @@
-import mongoose from "mongoose";
+import { Schema, model } from "mongoose";
 
-const AttachmentSchema = new mongoose.Schema({
+const AttachmentSchema = new Schema({
     filename: String,
     contentType: String,
     length: Number,
     chunkSize: Number,
     uploadDate: Date,
-    messageId: { type: mongoose.Schema.Types.ObjectId, ref: 'ChatMessage' },
 })
 
-export default Attachment = mongoose.model('Attachment', AttachmentSchema);ws
+const Attachment = model('Attachment', AttachmentSchema);
+export default Attachment;

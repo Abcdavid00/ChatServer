@@ -1,10 +1,11 @@
-import mongoose from "mongoose";
+import { Schema, model } from "mongoose";
 
-const RoomSchema = new mongoose.Schema({
+const RoomSchema = new Schema({
     postId: String,
-    users: [{ type: String, ref: 'User' }],
-    latestMessage: { type: mongoose.Schema.Types.ObjectId,ref: 'Message' },
-    latestMessageTimestamp: Date,
+    users: [{ type: String }],
+    latestMessage: { type: Schema.Types.ObjectId,ref: 'Message' },
+    latestTimestamp: Date,
 })
 
-export default Room = mongoose.model('Room', RoomSchema);
+const Room = model('Room', RoomSchema);
+export default Room;

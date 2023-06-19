@@ -1,11 +1,14 @@
-import mongoose from "mongoose";
+import { Schema, model } from 'mongoose';
 
-const MessageSchema = new mongoose.Schema({
-    chatRoomId: { type: mongoose.Schema.Types.ObjectId, ref: 'ChatRoom' },
-    senderId: { type: String, ref: 'User' },
+const MessageSchema = new Schema({
+    roomId: { type: Schema.Types.ObjectId, ref: 'Room' },
+    senderId: { type: String},
     timestamp: Date,
     content: String,
-    attachment: { type: mongoose.Schema.Types.ObjectId, ref: 'Attachment' }
+    previousMessageId: { type: Schema.Types.ObjectId, ref: 'Message' },
+    attachment: { type: Schema.Types.ObjectId, ref: 'Attachment' }
 })
 
-export default Message = mongoose.model('Message', MessageSchema);
+const Message = model('Message', MessageSchema);
+export default Message
+ 
