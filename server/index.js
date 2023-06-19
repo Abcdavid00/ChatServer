@@ -5,6 +5,7 @@ import { Server } from 'socket.io';
 import { initializeSocket } from './src/sockets/index.js';
 import router from './src/routers/index.js';
 import { restLogger, combinedLogger } from './src/utils/logger.js';
+import helmet from 'helmet';
 
 const port = process.env.PORT || 3000;
 const mongo_root_username = process.env.MONGO_ROOT_USERNAME;
@@ -16,6 +17,7 @@ app.use(cors({
   origin: '*',
   methods: ['GET', 'POST', 'PUT', 'DELETE']
 }));
+app.use(helmet());
 app.use(express.json());
 app.use((req, res, next) => {
   restLogger.info(`${req.method} ${req.url}`);
@@ -31,8 +33,8 @@ async function StartApp() {
     user: mongo_root_username,
     pass: mongo_root_password,
     authSource: 'admin',
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
+    // useNewUrlParser: true,
+    // useUnifiedTopology: true,
   }).then(() => {
     combinedLogger.info(`Connected to MongoDB at ${mongoURI}`);
   }).catch((error) => {
@@ -48,5 +50,10 @@ async function StartApp() {
 
   initializeSocket(server);
 }
+
+// if (module.hot) {
+//   module.hot.accept();
+//   module.hot.dispose(() => server.close());
+// }
 
 StartApp();

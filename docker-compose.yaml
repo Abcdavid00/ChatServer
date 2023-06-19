@@ -4,6 +4,8 @@ services:
     build: ./server
     depends_on:
       - mongo
+    volumes:
+      - ./chat-server-logs:/usr/src/app/logs
     ports:
       - 30002:${CHAT_SERVER_PORT}
     restart: always
@@ -12,9 +14,10 @@ services:
       MONGO_ROOT_USERNAME: ${MONGO_INITDB_ROOT_USERNAME}
       MONGO_ROOT_PASSWORD: ${MONGO_INITDB_ROOT_PASSWORD}
       PORT: ${CHAT_SERVER_PORT}
+      TZ: Asia/Ho_Chi_Minh
     networks:
       - mobike-chat
-    command: npm run start
+    command: yarn start
 
   mongo:
     image: mongo:7.0-rc-jammy
@@ -27,6 +30,7 @@ services:
       MONGO_INITDB_ROOT_USERNAME: ${MONGO_INITDB_ROOT_USERNAME}
       MONGO_INITDB_ROOT_PASSWORD: ${MONGO_INITDB_ROOT_PASSWORD}
       MONGO_INITDB_DATABASE: ${MONGO_INITDB_DATABASE}
+      TZ: Asia/Ho_Chi_Minh
     networks:
       - mobike-chat
 
@@ -40,6 +44,7 @@ services:
       ME_CONFIG_MONGODB_ADMINPASSWORD: ${MONGO_INITDB_ROOT_PASSWORD}
       ME_CONFIG_MONGODB_URL: mongodb://${MONGO_INITDB_ROOT_USERNAME}:${MONGO_INITDB_ROOT_PASSWORD}@mongo:27017/
       ME_CONFIG_MONGODB_ENABLE_ADMIN : 'true'
+      TZ: Asia/Ho_Chi_Minh
     networks:
       - mobike-chat
 
