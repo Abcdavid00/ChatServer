@@ -7,13 +7,14 @@ let io; // Store the Socket.IO instance
 let onlineUsers = {} // Store the online users
 
 function getUserId(socketId) {
-    for (let [key, value] of Object.entries(onlineUsers)) {
-        if (value === socketId) return key;
+    for (let key of Object.keys(onlineUsers)) {
+        if (onlineUsers[key] === socketId) return key;
     }
+    return null; // return null if socketId is not found
 }
 
 function getSocketId(userId) {
-    onlineUsers[userId];
+    return onlineUsers[userId]; // return the socketId associated with the userId
 }
 
 export function initializeSocket(server) {
