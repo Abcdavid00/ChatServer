@@ -4,7 +4,7 @@ import { getUsers } from '../utils/roomCache.js';
 import { createMessage } from '../controllers/message.js';
 
 let io; // Store the Socket.IO instance
-const onlineUsers = {} // Store the online users
+let onlineUsers = {} // Store the online users
 
 function getUserId(socketId) {
     for (let [key, value] of Object.entries(onlineUsers)) {
