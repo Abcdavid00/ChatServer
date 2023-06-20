@@ -1,6 +1,6 @@
 import { set } from "mongoose";
 
-export default class timeCache {
+export default class TimeCache {
     constructor(ttl, maxSize) {
         this.cache = {};
         this.ttl = ttl || 1000 * 60 * 60;
@@ -8,7 +8,7 @@ export default class timeCache {
         this.interval = setInterval(() => this.cleanOnInterval(), this.ttl);
     }
 
-    add(key, value) {
+    set(key, value) {
         this.cache[key] = {
             value,
             timestamp: Date.now()
