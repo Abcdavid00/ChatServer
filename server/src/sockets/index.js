@@ -63,6 +63,7 @@ async function OnClientSendMessage(socket, data) {
         return;
     }
     const senderId = getUserId(socket.id);
+    console.log(`User ${senderId} with socket ${socket.id} sent message to room ${roomId}: ${content}`)
     try {
         const message = await createMessage(roomId, senderId, content);
         const users = await getUsers(roomId);
