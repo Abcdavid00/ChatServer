@@ -1,23 +1,23 @@
 import { Server } from 'socket.io';
-import BiMap from 'bidirectional-map';
 import { socketLogger, combinedLogger } from '../utils/logger.js';
 import { getUsers } from '../utils/roomCache.js';
 import { createMessage } from '../controllers/message.js';
 
 let io; // Store the Socket.IO instance
-let onlineUsers // Store the online users
+const onlineUsers = {} // Store the online users
 
 function getUserId(socketId) {
-    return onlineUsers.getKey(socketId);
+    for (let [key, value] of Object.entries(onlineUsers)) {
+        if (value === socketId) return key;
+    }
 }
 
 function getSocketId(userId) {
-    return onlineUsers.get(userId);
+    onlineUsers[userId];
 }
 
 export function initializeSocket(server) {
     io = new Server(server);
-    onlineUsers = new BiMap();
     // Socket.IO event handlers and functionality
     io.on('connection', (socket) => {
 
@@ -33,7 +33,7 @@ export function initializeSocket(server) {
         socket.on('set user', (id) => {
             socketLogger.info(`Client ${socket.id} set user: ${id}`);
             uid = id;
-            onlineUsers.set(id, socket.id);
+            onlineUsers = { ...onlineUsers, [id]: socket.id}
             clearInterval(requestPing);
         });
 
