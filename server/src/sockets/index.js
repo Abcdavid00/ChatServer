@@ -32,8 +32,8 @@ export function initializeSocket(server) {
 
         socket.on('set user', (id) => {
             socketLogger.info(`Client ${socket.id} set user: ${id}`);
-            onlineUsers.set(uid, socket.id);
             uid = id;
+            onlineUsers.set(id, socket.id);
             clearInterval(requestPing);
         });
 
