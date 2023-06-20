@@ -67,6 +67,7 @@ async function OnClientSendMessage(socket, data) {
     try {
         const message = await createMessage(roomId, senderId, content);
         const users = await getUsers(roomId);
+        console.log("Users in room: ", users)
         for (const user of users) {
             const socketId = getSocketId(user);
             if (socketId) {
