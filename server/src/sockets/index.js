@@ -37,7 +37,8 @@ export function initializeSocket(server) {
         });
 
         socket.on('chat message', (msg) => {
-            socketLogger.info(`User ${uid} sent message: ${msg}`);
+            socketLogger.info(`Client ${socket.id} sent message: ${msg}`);
+            OnClientSendMessage(socket, msg);
         })
 
         socket.on('disconnect', () => {
@@ -54,7 +55,7 @@ export function getIO() {
     return io;
 }
 
-async function OnClientChat(socket, data) {
+async function OnClientSendMessage(socket, data) {
     const { roomId, content } = data;
     if (!roomId || !content) {
         socketLogger.error(`Invalid message from client ${socket.id}: ${JSON.stringify(data)}`);
