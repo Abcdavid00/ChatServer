@@ -70,6 +70,7 @@ async function OnClientSendMessage(socket, data) {
         console.log("Users in room: ", users)
         for (const user of users) {
             const socketId = getSocketId(user);
+            console.log(`Getting socket id for user ${user}: ${socketId}`)
             if (socketId) {
                 console.log(`Sending message to user ${user} with socket ${socketId}: ${JSON.stringify(message)}`)
                 io.to(socketId).emit('chat message', message);
