@@ -64,6 +64,7 @@ async function OnClientSendMessage(socket, data) {
     }
     const senderId = getUserId(socket.id);
     console.log(`User ${senderId} with socket ${socket.id} sent message to room ${roomId}: ${content}`)
+    console.log(`Current online users: ${JSON.stringify(onlineUsers)}`)
     try {
         const message = await createMessage(roomId, senderId, content);
         const users = await getUsers(roomId);
