@@ -2,6 +2,7 @@ import { Server } from 'socket.io';
 import BiMap from 'bidirectional-map';
 import { socketLogger, combinedLogger } from '../utils/logger.js';
 import { getUsers } from '../utils/roomCache.js';
+import { createMessage } from '../controllers/message.js';
 
 let io; // Store the Socket.IO instance
 let onlineUsers // Store the online users
