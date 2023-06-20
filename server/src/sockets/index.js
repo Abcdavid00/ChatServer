@@ -45,7 +45,12 @@ export function initializeSocket(server) {
 
         socket.on('disconnect', () => {
             socketLogger.info(`Socket disconnected: ${socket.id}`);
-            onlineUsers.delete(uid);
+            try {
+
+                onlineUsers.delete(uid);
+            } catch (error) {
+                socketLogger.error(`Error while disconnecting socket ${socket.id}: ${error}`);
+            }
         });
     });
 }
