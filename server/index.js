@@ -12,7 +12,7 @@ const mongo_root_username = process.env.MONGO_ROOT_USERNAME;
 const mongo_root_password = process.env.MONGO_ROOT_PASSWORD;
 
 const app = express();
-app.use(express.urlencoded({ extended: true }));
+// app.use(express.urlencoded({ extended: true }));
 app.use(cors({
   origin: '*',
   methods: ['GET', 'POST', 'PUT', 'DELETE']
