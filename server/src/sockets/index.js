@@ -67,12 +67,12 @@ async function OnClientSendMessage(socket, data) {
     try {
         const message = await createMessage(roomId, senderId, content);
         const users = await getUsers(roomId);
-        users.forEach((user) => {
-            const socketId = getSocketId(user._id);
+        for (const user of users) {
+            const socketId = getSocketId(user);
             if (socketId) {
                 io.to(socketId).emit('chat message', message);
             }
-        })
+        }
         socketLogger.info(`User ${senderId} sent message to room ${roomId}: ${content}`);
     } catch (error) {
         socketLogger.error(`Error while sending message to room ${roomId}: ${error}`);
