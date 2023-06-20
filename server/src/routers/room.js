@@ -44,4 +44,25 @@ router.post('/find', async (req, res) => {
     }
 })
 
+router.get('/latest/:userId', async (req, res) => {
+    const userId = req.params.userId;
+    let { from, count } = req.body;
+    if (!userId) {
+        res.status(400).send('Missing User ID');
+        return;
+    }
+    if (!from) from = 0;
+    if (!count) count = 30;
+    try {
+        const rooms = await getLatestRoomByUser(userId, from, count);
+        if (rooms) {
+            res.status(200).send(rooms);
+            return;
+        }
+        res.status(404).send('Rooms not found');
+    } catch (error) {
+        res.status(500).send('Server error');
+    }
+})
+
 export default router;

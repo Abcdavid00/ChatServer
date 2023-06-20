@@ -33,8 +33,8 @@ async function StartApp() {
     user: mongo_root_username,
     pass: mongo_root_password,
     authSource: 'admin',
-    // useNewUrlParser: true,
-    // useUnifiedTopology: true,
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
   }).then(() => {
     combinedLogger.info(`Connected to MongoDB at ${mongoURI}`);
   }).catch((error) => {

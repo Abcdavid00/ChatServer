@@ -5,7 +5,6 @@ const MessageSchema = new Schema({
     senderId: { type: String},
     timestamp: Date,
     content: String,
-    previousMessageId: { type: Schema.Types.ObjectId, ref: 'Message' },
     attachment: { type: Schema.Types.ObjectId, ref: 'Attachment' }
 })
 
