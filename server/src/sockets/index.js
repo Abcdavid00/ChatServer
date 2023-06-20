@@ -1,6 +1,6 @@
 import { Server } from 'socket.io';
 import { socketLogger, combinedLogger } from '../utils/logger.js';
-import { getUsers } from '../utils/roomCache.js';
+import { getRoomUsers } from '../controllers/room.js';
 import { createMessage } from '../controllers/message.js';
 
 let io; // Store the Socket.IO instance
@@ -73,7 +73,7 @@ async function OnClientSendMessage(socket, data) {
     console.log(`Online users: ${JSON.stringify(onlineUsers)}`)
     try {
         const message = await createMessage(roomId, senderId, content);
-        const users = await getUsers(roomId);
+        const users = await getRoomUsers(roomId);
         console.log("Users in room: ", users)
         for (const user of users) {
             const socketId = getSocketId(user);
