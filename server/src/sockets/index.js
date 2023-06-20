@@ -22,16 +22,18 @@ export function initializeSocket(server) {
 
         socketLogger.info(`Socket connected: ${socket.id}`);
 
-
         let sid = socket.id;
         let uid = null
 
-        socket.emit('request user');
+        const requestPing = setInterval(() => {
+            socket.emit('request user');
+        }, 1000);
 
         socket.on('set user', (id) => {
             socketLogger.info(`Client ${socket.id} set user: ${id}`);
             onlineUsers.set(uid, socket.id);
             uid = id;
+            clearInterval(requestPing);
         });
 
         socket.on('chat message', (msg) => {
