@@ -1,5 +1,5 @@
 import express from 'express';
-import { createRoom, findRoom, getRoom, getLatestRoomByUser } from '../controllers/room.js';
+import { createRoom, findRoom, getRoom, getLatestRoomByUser, roomHasUser } from '../controllers/room.js';
 
 const router = express.Router();
 
@@ -64,5 +64,22 @@ router.get('/latest/:userId', async (req, res) => {
         res.status(500).send('Server error');
     }
 })
+
+router.get('/hasUser/:roomId/:userId', async (req, res) => {
+    const roomId = req.params.roomId;
+    const userId = req.params.userId;
+    if (!roomId || !userId) {
+        res.status(400).send('Missing parameters');
+        return;
+    }
+    const room = await getRoom(roomId);
+    if (room) {
+        // const hasUser = room.users.includes(userId);
+        const hasUser = await roomHasUser(roomId, userId);
+        res.status(200).send(hasUser);
+    }else {
+        res.status(404).send('Room not found');
+    }
+}
 
 export default router;

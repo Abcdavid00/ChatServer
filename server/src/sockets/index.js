@@ -2,6 +2,7 @@ import { Server } from 'socket.io';
 import { socketLogger, combinedLogger } from '../utils/logger.js';
 import { getRoomUsers } from '../controllers/room.js';
 import { createMessage } from '../controllers/message.js';
+import { on } from 'nodemon';
 
 let io; // Store the Socket.IO instance
 let onlineUsers = {} // Store the online users
@@ -46,8 +47,7 @@ export function initializeSocket(server) {
         socket.on('disconnect', () => {
             socketLogger.info(`Socket disconnected: ${socket.id}`);
             try {
-
-                onlineUsers.delete(uid);
+                onlineUsers = { ...onlineUsers, [uid]: undefined}
             } catch (error) {
                 socketLogger.error(`Error while disconnecting socket ${socket.id}: ${error}`);
             }
