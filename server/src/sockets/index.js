@@ -2,7 +2,6 @@ import { Server } from 'socket.io';
 import { socketLogger, combinedLogger } from '../utils/logger.js';
 import { getRoomUsers } from '../controllers/room.js';
 import { createMessage } from '../controllers/message.js';
-import { on } from 'nodemon';
 
 let io; // Store the Socket.IO instance
 let onlineUsers = {} // Store the online users

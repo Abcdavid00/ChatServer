@@ -80,6 +80,6 @@ router.get('/hasUser/:roomId/:userId', async (req, res) => {
     }else {
         res.status(404).send('Room not found');
     }
-}
+})
 
 export default router;

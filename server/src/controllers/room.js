@@ -65,8 +65,11 @@ export async function getLatestRoomByUser(userId, from, count) {
 }
 
 export async function roomHasUser(roomId, userId) {
-    const user = await Room.findOne({ _id: roomId, users: { $in: [userId] } }).exec();
-    return user ? true : false;
+    const room = await Room.findById(roomId).exec();
+    if (!room) {
+        return false;
+    }
+    return room.users.includes(userId);
 }
 
 
