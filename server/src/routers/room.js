@@ -65,7 +65,7 @@ router.get('/latest/:userId', async (req, res) => {
     }
 })
 
-router.get('/hasUser/:roomId/:userId', async (req, res) => {
+router.get('/hasuser/:roomId/:userId', async (req, res) => {
     const roomId = req.params.roomId;
     const userId = req.params.userId;
     if (!roomId || !userId) {
