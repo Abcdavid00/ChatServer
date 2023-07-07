@@ -34,19 +34,19 @@ services:
     networks:
       - mobike-chat
 
-  # mongo-express:
-  #   image: mongo-express
-  #   restart: always
-  #   ports:
-  #     - 8082:8081
-  #   environment:
-  #     ME_CONFIG_MONGODB_ADMINUSERNAME: ${MONGO_INITDB_ROOT_USERNAME}
-  #     ME_CONFIG_MONGODB_ADMINPASSWORD: ${MONGO_INITDB_ROOT_PASSWORD}
-  #     ME_CONFIG_MONGODB_URL: mongodb://${MONGO_INITDB_ROOT_USERNAME}:${MONGO_INITDB_ROOT_PASSWORD}@mongo:27017/
-  #     ME_CONFIG_MONGODB_ENABLE_ADMIN : 'true'
-  #     TZ: Asia/Ho_Chi_Minh
-  #   networks:
-  #     - mobike-chat
+  mongo-express:
+    image: mongo-express
+    restart: always
+    ports:
+      - 8082:8081
+    environment:
+      ME_CONFIG_MONGODB_ADMINUSERNAME: ${MONGO_INITDB_ROOT_USERNAME}
+      ME_CONFIG_MONGODB_ADMINPASSWORD: ${MONGO_INITDB_ROOT_PASSWORD}
+      ME_CONFIG_MONGODB_URL: mongodb://${MONGO_INITDB_ROOT_USERNAME}:${MONGO_INITDB_ROOT_PASSWORD}@mongo:27017/
+      ME_CONFIG_MONGODB_ENABLE_ADMIN : 'true'
+      TZ: Asia/Ho_Chi_Minh
+    networks:
+      - mobike-chat
 
 networks:
   mobike-chat:
