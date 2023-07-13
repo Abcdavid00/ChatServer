@@ -22,7 +22,8 @@ export async function createRoom(postId, users) {
 }
 
 export async function getRoom(roomId) {
-    return await Room.findById(roomId).exec();
+    const room = await Room.findById(roomId).exec();
+    return room;
 }
 
 export async function findRoom(postId, users) {
