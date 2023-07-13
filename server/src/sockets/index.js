@@ -83,16 +83,15 @@ async function OnClientSendMessage(socket, data) {
             }
         }
         socketLogger.info(`User ${senderId} sent message to room ${roomId}: ${content}`);
-        const room = getRoom(roomId);
+        const room = await getRoom(roomId);
         OnRoomCreated(roomId);
     } catch (error) {
         socketLogger.error(`Error while sending message to room ${roomId}: ${error}`);
     }
 }
 
-async function OnRoomCreated(roomId) {
-    const users = await getRoomUsers(roomId);
-    const room = getRoom(roomId);
+async function OnRoomCreated(room) {
+    const users = await getRoomUsers(room._id);
     for (const user of users) {
         const socketId = getSocketId(user);
         if (socketId) {
