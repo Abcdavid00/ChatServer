@@ -75,5 +75,8 @@ export async function roomHasUser(roomId, userId) {
 
 export async function getRoomUsers(roomId) {
     const room = await Room.findById(roomId).select('users').exec();
+    if (!room) {
+        return null;
+    }
     return room.users;
 }

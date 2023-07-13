@@ -84,14 +84,14 @@ async function OnClientSendMessage(socket, data) {
         }
         socketLogger.info(`User ${senderId} sent message to room ${roomId}: ${content}`);
         const room = getRoom(roomId);
-        OnRoomCreated(room);
+        OnRoomCreated(roomId);
     } catch (error) {
         socketLogger.error(`Error while sending message to room ${roomId}: ${error}`);
     }
 }
 
-async function OnRoomCreated(room) {
-    const users = await getRoomUsers(room._id);
+async function OnRoomCreated(roomId) {
+    const users = await getRoomUsers(roomId);
     for (const user of users) {
         const socketId = getSocketId(user);
         if (socketId) {
