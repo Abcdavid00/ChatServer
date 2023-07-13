@@ -1,7 +1,7 @@
 import Room from '../models/room.js';
 import Message from '../models/message.js';
 import { combinedLogger } from '../utils/logger.js';
-import { roomHasUser } from './room.js';
+import { roomHasUser, updateLatestMessage } from './room.js';
 
 export async function createMessage(roomId, senderId, content) {
     const timestamp = Date.now();
@@ -11,6 +11,7 @@ export async function createMessage(roomId, senderId, content) {
     }
     const message = new Message({ roomId, senderId, content, timestamp });
     await message.save();
+    updateLatestMessage(message);
     return message;
 }
 

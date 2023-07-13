@@ -1,6 +1,7 @@
 import Room from '../models/room.js';
 import { OnRoomCreated } from '../sockets/index.js';
 import { combinedLogger } from '../utils/logger.js';
+import Message from '../models/message';
 
 export async function createRoom(postId, users) {
     try{
@@ -82,4 +83,16 @@ export async function getRoomUsers(roomId) {
         return null;
     }
     return room.users;
+}
+
+
+export async function updateLatestMessage(message: Message) {
+    const room = await Room.findById(message.roomId).exec();
+    if (!room) {
+        return;
+    }
+    room.latestMessage = message;
+    room.latestTimestamp = message.timestamp;
+    await room.save();
+    console.log(`Updated latest message of room ${room._id} to ${message._id} at ${message.timestamp}`)
 }
