@@ -86,7 +86,7 @@ export async function getRoomUsers(roomId) {
 }
 
 
-export async function updateLatestMessage(message: Message) {
+export async function updateLatestMessage(message) {
     const room = await Room.findById(message.roomId).exec();
     if (!room) {
         return;
