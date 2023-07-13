@@ -27,7 +27,6 @@ router.post('/create', async (req, res) => {
         room: room,
         created: created,
     });
-    
 })
 
 router.post('/find', async (req, res) => {

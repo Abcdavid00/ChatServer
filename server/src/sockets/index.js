@@ -1,6 +1,6 @@
 import { Server } from 'socket.io';
 import { socketLogger, combinedLogger } from '../utils/logger.js';
-import { getRoomUsers } from '../controllers/room.js';
+import { getRoom, getRoomUsers } from '../controllers/room.js';
 import { createMessage } from '../controllers/message.js';
 
 let io; // Store the Socket.IO instance
@@ -83,7 +83,19 @@ async function OnClientSendMessage(socket, data) {
             }
         }
         socketLogger.info(`User ${senderId} sent message to room ${roomId}: ${content}`);
+        const room = getRoom(roomId);
+        OnRoomCreated(room);
     } catch (error) {
         socketLogger.error(`Error while sending message to room ${roomId}: ${error}`);
+    }
+}
+
+async function OnRoomCreated(room) {
+    const users = await getRoomUsers(room.id);
+    for (const user of users) {
+        const socketId = getSocketId(user);
+        if (socketId) {
+            io.to(socketId).emit('room created', room);
+        }
     }
 }
