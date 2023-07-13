@@ -92,6 +92,7 @@ async function OnClientSendMessage(socket, data) {
 
 async function OnRoomCreated(roomId) {
     const users = await getRoomUsers(roomId);
+    const room = getRoom(roomId);
     for (const user of users) {
         const socketId = getSocketId(user);
         if (socketId) {
