@@ -1,7 +1,6 @@
 import Room from '../models/room.js';
 import { OnRoomCreated } from '../sockets/index.js';
 import { combinedLogger } from '../utils/logger.js';
-import Message from '../models/message';
 
 export async function createRoom(postId, users) {
     try{
