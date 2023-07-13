@@ -82,15 +82,15 @@ async function OnClientSendMessage(socket, data) {
                 io.to(socketId).emit('chat message', message);
             }
         }
-        socketLogger.info(`User ${senderId} sent message to room ${roomId}: ${content}`);
-        const room = await getRoom(roomId);
-        OnRoomCreated(room);
+        // socketLogger.info(`User ${senderId} sent message to room ${roomId}: ${content}`);
+        // const room = await getRoom(roomId);
+        // OnRoomCreated(room);
     } catch (error) {
         socketLogger.error(`Error while sending message to room ${roomId}: ${error}`);
     }
 }
 
-async function OnRoomCreated(room) {
+export async function OnRoomCreated(room) {
     const users = await getRoomUsers(room._id);
     console.log("Room created: ", JSON.stringify(room))
     console.log(`Users in room ${room._id}: `, users)

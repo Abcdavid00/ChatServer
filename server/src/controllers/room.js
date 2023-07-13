@@ -1,4 +1,5 @@
 import Room from '../models/room.js';
+import { OnRoomCreated } from '../sockets/index.js';
 import { combinedLogger } from '../utils/logger.js';
 
 export async function createRoom(postId, users) {
@@ -11,6 +12,7 @@ export async function createRoom(postId, users) {
         const latestMessage = null;
         room = new Room({ postId, users, latestMessage, latestTimestamp });
         await room.save();
+        OnRoomCreated(room);
         return [room, true];
     } catch (error) {
         // Handle the error appropriately
