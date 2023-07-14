@@ -101,3 +101,15 @@ export async function OnRoomCreated(room) {
         }
     }
 }
+
+export async function OnRoomUpdated(room) {
+    const users = await getRoomUsers(room._id);
+    console.log("Room updated: ", JSON.stringify(room))
+    console.log(`Users in room ${room._id}: `, users)
+    for (const user of users) {
+        const socketId = getSocketId(user);
+        if (socketId) {
+            io.to(socketId).emit('room updated', room);
+        }
+    }
+}

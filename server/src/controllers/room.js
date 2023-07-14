@@ -1,5 +1,5 @@
 import Room from '../models/room.js';
-import { OnRoomCreated } from '../sockets/index.js';
+import { OnRoomCreated, OnRoomUpdated } from '../sockets/index.js';
 import { combinedLogger } from '../utils/logger.js';
 
 export async function createRoom(postId, users) {
@@ -24,7 +24,7 @@ export async function createRoom(postId, users) {
 }
 
 export async function getRoom(roomId) {
-    const room = await Room.findById(roomId).exec();
+    const room = await Room.findById(roomId).populate('latestMessage').exec();
     return room;
 }
 
@@ -56,7 +56,7 @@ export async function getRoomsByUser(userId) {
 
 export async function getLatestRoomByUser(userId, from, count) {
     try {
-        const rooms = await Room.find({ users: { $in: [userId] } }).sort({ latestTimestamp: -1 }).skip(from).limit(count).exec();
+        const rooms = await Room.find({ users: { $in: [userId] } }).sort({ latestTimestamp: -1 }).skip(from).limit(count).populate('latestMessage').exec();
         return rooms;
     } catch (error) {
         // Handle the error appropriately
@@ -93,5 +93,6 @@ export async function updateLatestMessage(message) {
     room.latestMessage = message;
     room.latestTimestamp = message.timestamp;
     await room.save();
+    OnRoomUpdated(room);
     console.log(`Updated latest message of room ${room._id} to ${message._id} at ${message.timestamp}`)
 }
