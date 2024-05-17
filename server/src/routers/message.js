@@ -7,23 +7,25 @@ router.get('/', (req, res) => {
     res.send('Hello from Mobike Chat Server (Message)!');
 });
 
-router.post('/create', async (req, res) => {
-    const { roomId, userId, content } = req.body;
-    if (!roomId || !userId || !content) {
-        res.status(400).send('Missing parameters');
-        return;
-    }
-    try {
-        const message = await createMessage(roomId, userId, content);
-        res.status(200).send(message);
-    } catch (error) {
-        if (error.message === 'User is not in room') {
-            res.status(400).send('User is not in room');
-            return;
-        }
-    }
-});
+// Create a new message
+// router.post('/create', async (req, res) => {
+//     const { roomId, userId, content } = req.body;
+//     if (!roomId || !userId || !content) {
+//         res.status(400).send('Missing parameters');
+//         return;
+//     }
+//     try {
+//         const message = await createMessage(roomId, userId, content);
+//         res.status(200).send(message);
+//     } catch (error) {
+//         if (error.message === 'User is not in room') {
+//             res.status(400).send('User is not in room');
+//             return;
+//         }
+//     }
+// });
 
+// Get latest messages from a room
 router.get('/latest/:roomId', async (req, res) => {
     const roomId = req.params.roomId;
     let { from, count } = req.body;

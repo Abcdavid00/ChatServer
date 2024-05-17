@@ -8,8 +8,9 @@ import { restLogger, combinedLogger } from './src/utils/logger.js';
 import helmet from 'helmet';
 
 const port = process.env.PORT || 3000;
-const mongo_root_username = process.env.MONGO_ROOT_USERNAME;
-const mongo_root_password = process.env.MONGO_ROOT_PASSWORD;
+const MONGO_ROOT_USERNAME = process.env.MONGO_ROOT_USERNAME;
+const MONGO_ROOT_PASSWORD = process.env.MONGO_ROOT_PASSWORD;
+const MONGO_DATABASE = process.env.MONGO_DATABASE;
 
 const app = express();
 app.use(express.urlencoded({ extended: true }));
@@ -27,16 +28,16 @@ app.use((req, res, next) => {
 async function StartApp() {
 
   //Connect to MongoDB
-  const mongoURI = process.env.MONGO_URI || 'mongodb://mongo:27017/chat';
-  combinedLogger.info(`Connecting to MongoDB at ${mongoURI}`);
+  const mongoURI = process.env.MONGO_URI || `mongodb://mongo:27017/${MONGO_DATABASE}` ;
+  combinedLogger.info(`Connecting to MongoDB using ${mongoURI}`);
   await mongoose.connect(mongoURI, {
-    user: mongo_root_username,
-    pass: mongo_root_password,
+    user: MONGO_ROOT_USERNAME,
+    pass: MONGO_ROOT_PASSWORD,
     authSource: 'admin',
     useNewUrlParser: true,
     useUnifiedTopology: true,
   }).then(() => {
-    combinedLogger.info(`Connected to MongoDB at ${mongoURI}`);
+    combinedLogger.info(`Connected to MongoDB using ${mongoURI}`);
   }).catch((error) => {
     combinedLogger.error(`Error connecting to MongoDB: ${error}`);
     return;
@@ -50,10 +51,5 @@ async function StartApp() {
 
   initializeSocket(server);
 }
-
-// if (module.hot) {
-//   module.hot.accept();
-//   module.hot.dispose(() => server.close());
-// }
 
 StartApp();

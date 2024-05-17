@@ -8,7 +8,7 @@ router.use('/room', RoomRouter);
 router.use('/message', MessageRouter);
 
 router.get('/', (req, res) => {
-    res.send('Hello from Mobike Chat Server!');
+    res.send('Hello from Chat Server!');
 })
 
 router.get('/*', (req, res) => {

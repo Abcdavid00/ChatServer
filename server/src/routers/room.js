@@ -7,15 +7,17 @@ router.get('/', (req, res) => {
     res.send('Hello from Mobike Chat Server (Room)!');
 });
 
+// Get a room by ID
 router.get('/:roomID', async (req, res) => {
     const room = await getRoom(req.params.roomID);
     if (room) {
         res.send(room);
-    }else {
+    } else {
         res.status(404).send('Room not found');
     }
 });
 
+// Create a new room
 router.post('/create', async (req, res) => {
     const { postId, users } = req.body;
     if (!postId || !users) {
@@ -29,6 +31,7 @@ router.post('/create', async (req, res) => {
     });
 })
 
+// Find a room by post ID and users
 router.post('/find', async (req, res) => {
     const { postId, users } = req.body;
     if (!postId || !users) {
@@ -43,6 +46,7 @@ router.post('/find', async (req, res) => {
     }
 })
 
+// Get latest rooms by user ID
 router.get('/latest/:userId', async (req, res) => {
     const userId = req.params.userId;
     let { from, count } = req.body;

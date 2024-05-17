@@ -38,7 +38,7 @@ export function initializeSocket(server) {
             clearInterval(requestPing);
         });
 
-        socket.on('chat message', (msg) => {
+        socket.on('send message', (msg) => {
             socketLogger.info(`Client ${socket.id} sent message: ${msg}`);
             OnClientSendMessage(socket, msg);
         })
